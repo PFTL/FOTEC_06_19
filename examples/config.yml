@@ -1,0 +1,4 @@
+scan:
+  start: 0V
+  stop: 3.3V
+  step: 100mV

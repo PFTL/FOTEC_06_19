@@ -28,20 +28,21 @@ class Device:
         return self.query('IDN')
 
     def set_output(self, channel, value):
-        new_value = int(value*4095/3.3)
-        command = f'OUT:CH{channel}:{new_value}'
+        """ Value from 0 to 4095 """
+        command = f'OUT:CH{channel}:{value}'
         self.write(command)
 
     def read_input(self, channel):
         command = f'IN:CH{channel}'
-        ans = int(self.query(command))
-        volts = ans/1024*3.3
-        return volts
+        return int(self.query(command))
 
 
 if __name__ == '__main__':
     dev = Device('COM7')
     print(dev.idn())
-    dev.set_output(0, '3.3V')
+    dev.set_output(0, 4000)
+    print(dev.read_input(0))
+    sleep(1)
+    dev.set_output(0, 2000)
     print(dev.read_input(0))
 

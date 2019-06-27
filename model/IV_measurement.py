@@ -1,3 +1,4 @@
+import os
 from time import sleep
 
 import yaml
@@ -9,6 +10,8 @@ class Experiment:
     def __init__(self):
         self.config = None
         self.daq = None
+        self.volts = []
+        self.currents = []
 
     def load_daq(self):
         self.daq = RealDaq(self.config['DAQ']['port'])
@@ -23,25 +26,45 @@ class Experiment:
         step = ur(self.config['scan']['step'])
 
         volt = start.to('V')
-        volts = []
+        self.volts = []
         while volt < stop.to('V'):
-            volts.append(volt)
+            self.volts.append(volt)
             volt += step.to('V')
 
-        currents = []
+        self.currents = []
         resistance = ur(self.config['experiment']['resistance'])
         delay = ur(self.config['scan']['delay']).m_as('s')
-        for volt in volts:
+        for volt in self.volts:
             self.daq.set_analog(self.config['scan']['channel_out'], volt)
             current = self.daq.read_analog(self.config['scan']['channel_in'])/resistance
-            currents.append(current.to('mA'))
+            self.currents.append(current.to('mA'))
             sleep(delay)
 
     def save_data(self):
-        pass
+        i = 1
+        filename = self.config['experiment']['save_file'] + '.dat'
+        while os.path.isfile(filename):
+            filename = self.config['experiment']['save_file'] + '_' + str(i) + '.dat'
+            i += 1
+
+        with open(filename, 'w') as f:
+            for i in range(len(self.currents)):
+                volt = self.volts[i]
+                current = self.currents[i]
+                f.write(f'{volt:}, {current}\n')
 
     def save_metadata(self):
-        pass
+        i = 1
+        filename = self.config['experiment']['save_meta'] + '.dat'
+        while os.path.isfile(filename):
+            filename = self.config['experiment']['save_meta'] + '_' + str(i) + '.dat'
+            i += 1
+        with open(filename, 'w') as f:
+            f.write(yaml.dump(self.config))
+
+    def save(self):
+        self.save_metadata()
+        self.save_data()
 
     def finalize(self):
         pass

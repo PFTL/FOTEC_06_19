@@ -13,4 +13,4 @@ scan:
 experiment:
   resistance: 100 ohm
   save_file: IV_data
-  save_meta:
+  save_meta: IV_Meta

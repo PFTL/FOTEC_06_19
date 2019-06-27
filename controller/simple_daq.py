@@ -37,19 +37,11 @@ class Device:
         return self.query("IDN")
 
     def get_analog_value(self, channel):
-        """Gets the value from an analog port.
-        :param int port: Port number to read.
-        :return int: The value read.
-        """
         query_string = 'IN:CH{}'.format(channel)
         value = int(self.query(query_string))
         return value
 
-    def set_analog_value(self, channel, value):
-        """ Sets a voltage to an output port.
-        :param int port: Port number. Range depends on device
-        :param Quantity value: The output value in Volts.
-        """
+    def set_analog(self, channel, value):
         value = int(value.m_as('V')/3.3*4095)
         write_string = 'OUT:CH{}:{}'.format(channel, value)
         self.write(write_string)
@@ -107,5 +99,5 @@ if __name__ == "__main__":
     input('Press to read value')
     print(d.query('IN:CH0'))
     out_value = ur('3.0V')
-    d.set_analog_value(0, out_value)
+    d.set_analog(0, out_value)
     d.finalize()

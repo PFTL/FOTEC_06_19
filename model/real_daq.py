@@ -1,7 +1,5 @@
-import pint
 from controller.simple_daq import Device
-
-ur = pint.UnitRegistry()
+from model import ur
 
 
 class RealDaq:

@@ -1,4 +1,14 @@
+DAQ:
+  name: Real
+  port: COM9
+
 scan:
   start: 0V
   stop: 3.3V
   step: 100mV
+  delay: 0.1s
+  channel_out: 0
+  channel_in: 0
+
+experiment:
+  resistance: 100 ohm

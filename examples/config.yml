@@ -5,7 +5,7 @@ DAQ:
 scan:
   start: 0V # Cant be below 0, cant be above 3.3
   stop: 3.3V #
-  step: 100mV
+  num_steps: 100
   delay: 0.1s
   channel_out: 0
   channel_in: 0
@@ -14,3 +14,4 @@ experiment:
   resistance: 100 ohm
   save_file: IV_data
   save_meta: IV_Meta
+  

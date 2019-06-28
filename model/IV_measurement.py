@@ -1,4 +1,5 @@
 import os
+import numpy as np
 from time import sleep
 
 import yaml
@@ -24,27 +25,26 @@ class Experiment:
     def do_scan(self):
         if self.is_running:
             raise Exception('Scan already running')
-        self.is_running = True
+
         start = ur(self.config['scan']['start'])
         stop = ur(self.config['scan']['stop'])
-        step = ur(self.config['scan']['step'])
+        num_steps = int(self.config['scan']['num_steps'])
 
-        volt = start.to('V')
-        self.volts = []
-        while volt < stop.to('V'):
-            self.volts.append(volt)
-            volt += step.to('V')
+        self.volts = np.linspace(start.m_as('V'), stop.m_as('V'), num_steps) * ur('V')
 
-        self.currents = []
+        self.currents = np.zeros(num_steps) * ur('mA')
         resistance = ur(self.config['experiment']['resistance'])
         delay = ur(self.config['scan']['delay']).m_as('s')
 
         self.keep_running = True
+        i = 0
+        self.is_running = True
         for volt in self.volts:
             self.daq.set_analog(self.config['scan']['channel_out'], volt)
             current = self.daq.read_analog(self.config['scan']['channel_in'])/resistance
-            self.currents.append(current.to('mA'))
-
+            # self.currents.append(current.to('mA'))
+            self.currents[i] = current.to('mA')
+            i += 1
             sleep(delay)
             if not self.keep_running:
                 print('Scan stopped')
@@ -62,7 +62,7 @@ class Experiment:
             for i in range(len(self.currents)):
                 volt = self.volts[i]
                 current = self.currents[i]
-                f.write(f'{volt:}, {current}\n')
+                f.write(f'{volt}, {current}\n')
 
     def save_metadata(self):
         i = 1

@@ -18,6 +18,9 @@ class StartWindow(QMainWindow):
 
     def start_pressed(self):
         print('Button pressed')
+        start_voltage = self.start_line.text()
+        self.experiment.config['scan']['start'] = start_voltage
+
         self.working_thread = Thread(target=self.experiment.do_scan)
         self.working_thread.start()
 

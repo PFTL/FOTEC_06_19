@@ -17,8 +17,7 @@ class RealDaq:
 
     def set_analog(self, channel, value):
         value = int(value.m_as('V')/3.3*4095)
-        query_string = 'OUT:CH{}:{}'.format(channel, value)
-        self.driver.write(query_string)
+        self.driver.set_analog(channel, value)
 
 
 if __name__ == '__main__':

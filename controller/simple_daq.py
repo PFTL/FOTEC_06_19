@@ -42,7 +42,9 @@ class Device:
         return value
 
     def set_analog(self, channel, value):
-        value = int(value.m_as('V')/3.3*4095)
+        if value > 4095:
+            raise Exception('Value can\'t be over 4095')
+
         write_string = 'OUT:CH{}:{}'.format(channel, value)
         self.write(write_string)
 

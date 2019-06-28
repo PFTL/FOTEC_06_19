@@ -3,8 +3,8 @@ DAQ:
   port: COM9
 
 scan:
-  start: 0V
-  stop: 3.3V
+  start: 0V # Cant be below 0, cant be above 3.3
+  stop: 3.3V #
   step: 100mV
   delay: 0.1s
   channel_out: 0

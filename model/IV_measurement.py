@@ -12,6 +12,7 @@ class Experiment:
         self.daq = None
         self.volts = []
         self.currents = []
+        self.is_running = False
 
     def load_daq(self):
         self.daq = RealDaq(self.config['DAQ']['port'])
@@ -21,6 +22,9 @@ class Experiment:
             self.config = yaml.load(f, Loader=yaml.FullLoader)
 
     def do_scan(self):
+        if self.is_running:
+            raise Exception('Scan already running')
+        self.is_running = True
         start = ur(self.config['scan']['start'])
         stop = ur(self.config['scan']['stop'])
         step = ur(self.config['scan']['step'])
@@ -34,11 +38,18 @@ class Experiment:
         self.currents = []
         resistance = ur(self.config['experiment']['resistance'])
         delay = ur(self.config['scan']['delay']).m_as('s')
+
+        self.keep_running = True
         for volt in self.volts:
             self.daq.set_analog(self.config['scan']['channel_out'], volt)
             current = self.daq.read_analog(self.config['scan']['channel_in'])/resistance
             self.currents.append(current.to('mA'))
+
             sleep(delay)
+            if not self.keep_running:
+                print('Scan stopped')
+                break
+        self.is_running = False
 
     def save_data(self):
         i = 1

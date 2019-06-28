@@ -25,6 +25,7 @@ class StartWindow(QMainWindow):
         self.working_thread.start()
 
     def stop_pressed(self):
+        print('Stop pressed')
         self.experiment.keep_running = False
 
     def closeEvent(self, evnt):

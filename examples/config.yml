@@ -10,7 +10,13 @@ scan:
   channel_out: 0
   channel_in: 0
 
+monitor:
+  channel_in: 0
+  samples: 100 # number of points
+  delay: 0.1s  # time interval between steps
+
 experiment:
   resistance: 100 ohm
   save_file: IV_data
   save_meta: IV_Meta
+  save_directory: D:\Data\Fotec\2019-06-28

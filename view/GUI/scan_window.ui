@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1044</width>
-    <height>327</height>
+    <width>859</width>
+    <height>533</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,12 +30,12 @@
        <item row="1" column="6">
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>Step:</string>
+          <string>Steps:</string>
          </property>
         </widget>
        </item>
        <item row="1" column="7">
-        <widget class="QLineEdit" name="outStepLine"/>
+        <widget class="QLineEdit" name="outNumStepsLine"/>
        </item>
        <item row="1" column="5">
         <widget class="QLineEdit" name="outStopLine"/>
@@ -162,6 +162,13 @@
       </item>
      </layout>
     </item>
+    <item>
+     <widget class="QProgressBar" name="scan_progress_bar">
+      <property name="value">
+       <number>24</number>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -169,7 +176,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1044</width>
+     <width>859</width>
      <height>26</height>
     </rect>
    </property>
@@ -179,7 +186,16 @@
     </property>
     <addaction name="action_Save"/>
    </widget>
+   <widget class="QMenu" name="menuMonitor">
+    <property name="title">
+     <string>Monitor</string>
+    </property>
+    <addaction name="actionShow_Monitor"/>
+    <addaction name="actionStart_Monitor"/>
+    <addaction name="actionStop_Monitor"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuMonitor"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action_Save">
@@ -190,12 +206,27 @@
     <string>Ctrl+S</string>
    </property>
   </action>
+  <action name="actionShow_Monitor">
+   <property name="text">
+    <string>Show Monitor</string>
+   </property>
+  </action>
+  <action name="actionStart_Monitor">
+   <property name="text">
+    <string>Start Monitor</string>
+   </property>
+  </action>
+  <action name="actionStop_Monitor">
+   <property name="text">
+    <string>Stop Monitor</string>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>outChannelLine</tabstop>
   <tabstop>outStartLine</tabstop>
   <tabstop>outStopLine</tabstop>
-  <tabstop>outStepLine</tabstop>
+  <tabstop>outNumStepsLine</tabstop>
   <tabstop>inChannelLine</tabstop>
   <tabstop>inDelayLine</tabstop>
  </tabstops>
